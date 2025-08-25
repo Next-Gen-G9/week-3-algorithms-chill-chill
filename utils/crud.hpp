@@ -53,6 +53,20 @@ void updateProduct(vector<Product>& products) {
     // 2. Find the product. If not found, print an error.
     // 3. If found, ask for the new quantity and price and update the product in the vector.
     cout << "updateProduct function is not implemented yet." << endl;
+    int id;
+    cout << "Enter product ID to update: ";
+    cin >> id;
+    for (auto& product : products) {
+        if (product.id == id) {
+            cout << "Product found: " << product.name << endl;
+            cout << "Enter new quantity: ";
+            cin >> product.quantity;
+            cout << "Enter new price: ";
+            cin >> product.price;
+            cout << "Product updated successfully." << endl;
+            return;
+        }
+    }
 }
 
 void deleteProduct(vector<Product>& products) {
@@ -61,6 +75,18 @@ void deleteProduct(vector<Product>& products) {
     // 2. Find and remove it from the vector. (Hint: use `products.erase()`).
     // 3. If not found, print an error message.
     cout << "deleteProduct function is not implemented yet." << endl;
+    int id;
+    cout << "Enter product ID to delete: ";
+    cin >> id;
+    auto it = remove_if(products.begin(), products.end(), [id](const Product& product) {
+        return product.id == id;
+    });
+    if (it != products.end()) {
+        products.erase(it, products.end());
+        cout << "Product with ID " << id << " deleted successfully." << endl;
+    } else {
+        cout << "Product not found." << endl;
+    }
 }
 
 void saveToFile(const vector<Product>& products, const string& filename) {
