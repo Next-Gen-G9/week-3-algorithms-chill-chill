@@ -78,13 +78,16 @@ void deleteProduct(vector<Product>& products) {
     int id;
     cout << "Enter product ID to delete: ";
     cin >> id;
-    auto it = remove_if(products.begin(), products.end(), [id](const Product& product) {
-        return product.id == id;
-    });
-    if (it != products.end()) {
-        products.erase(it, products.end());
-        cout << "Product with ID " << id << " deleted successfully." << endl;
-    } else {
+    bool found = false;
+    for (auto it = products.begin(); it != products.end(); ++it) {
+        if (it->id == id) {
+            products.erase(it);
+            cout << "Product with ID " << id << " deleted successfully." << endl;
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
         cout << "Product not found." << endl;
     }
 }
@@ -98,6 +101,16 @@ void saveToFile(const vector<Product>& products, const string& filename) {
     //    Hint: `outFile.write(reinterpret_cast<const char*>(&product), sizeof(Product));`
     // 5. Close the file.
     cout << "saveToFile function is not implemented yet." << endl;
+    ofstream outFile(filename, ios::binary);
+    if (!outFile) {
+        cerr << "Error opening file for writing: " << filename << endl;
+        return;
+    }       
+    for (const auto& product : products) {
+        outFile.write(reinterpret_cast<const char*>(&product), sizeof(Product));
+    }
+    outFile.close();
+    cout << "Products saved to file successfully." << endl;
 }
 
 void loadFromFile(vector<Product>& products, int& nextId, const string& filename) {
@@ -111,4 +124,21 @@ void loadFromFile(vector<Product>& products, int& nextId, const string& filename
     // 6. Keep track of the highest ID you find.
     // 7. After the loop, set 'nextId' to be (the highest ID + 1).
     // 8. Close the file.
+    cout << "loadFromFile function is not implemented yet." << endl;
+    ifstream inFile(filename, ios::binary);     
+    if (!inFile) {
+        
+        return;
+    }
+    Product tempProduct;
+    int maxId = 0;
+    while (inFile.read(reinterpret_cast<char*>(&tempProduct), sizeof(Product))) {
+        products.push_back(tempProduct);
+        if (tempProduct.id > maxId) {
+            maxId = tempProduct.id;
+        }
+    }
+    nextId = maxId + 1;
+    inFile.close();
+    cout << "Products loaded from file successfully." << endl;
 }
