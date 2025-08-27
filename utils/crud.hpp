@@ -24,7 +24,8 @@ void addProduct(vector<Product>& products, int& nextId) {
     cout << "addProduct function is not implemented yet." << endl;
     Product newProduct;
     newProduct.id = nextId++;
-    cout<<"Enter product namef:"; getline(cin, newProduct.name);
+    cout<<"Enter product name:"; getline(cin, newProduct.name);
+ 
     cout<<"Enter product quantity:"; cin >> newProduct.quantity;
     cout<<"Enter product price:"; cin >> newProduct.price;
     products.push_back(newProduct);
@@ -54,11 +55,12 @@ void searchProduct(const vector<Product>& products) {
     // 2. Find the product with that ID and print its details.
     // 3. If not found, print a "Product not found" message.
     cout << "searchProduct function is not implemented yet." << endl;
-    int searchId;
-    int found=0;
-    cout<<"Enter product ID to search:";cin>>searchId;
-    if(searchId!=found){
-        cout<<"Product not found";
+    int id;
+    cout << "Enter product ID to search: ";
+    cin >> id;
+    if(products.empty()){
+        cout<<"Inventory is empty."<<endl;
+        return;
     }
 }
 
@@ -68,6 +70,20 @@ void updateProduct(vector<Product>& products) {
     // 2. Find the product. If not found, print an error.
     // 3. If found, ask for the new quantity and price and update the product in the vector.
     cout << "updateProduct function is not implemented yet." << endl;
+    int id;
+    cout << "Enter product ID to update: ";
+    cin >> id;
+    for (auto& product : products) {
+        if (product.id == id) {
+            cout << "Product found: " << product.name << endl;
+            cout << "Enter new quantity: ";
+            cin >> product.quantity;
+            cout << "Enter new price: ";
+            cin >> product.price;
+            cout << "Product updated successfully." << endl;
+            return;
+        }
+    }
 }
 
 void deleteProduct(vector<Product>& products) {
@@ -76,6 +92,21 @@ void deleteProduct(vector<Product>& products) {
     // 2. Find and remove it from the vector. (Hint: use `products.erase()`).
     // 3. If not found, print an error message.
     cout << "deleteProduct function is not implemented yet." << endl;
+    int id;
+    cout << "Enter product ID to delete: ";
+    cin >> id;
+    bool found = false;
+    for (auto it = products.begin(); it != products.end(); ++it) {
+        if (it->id == id) {
+            products.erase(it);
+            cout << "Product with ID " << id << " deleted successfully." << endl;
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        cout << "Product not found." << endl;
+    }
 }
 
 void saveToFile(const vector<Product>& products, const string& filename) {
@@ -87,6 +118,16 @@ void saveToFile(const vector<Product>& products, const string& filename) {
     //    Hint: `outFile.write(reinterpret_cast<const char*>(&product), sizeof(Product));`
     // 5. Close the file.
     cout << "saveToFile function is not implemented yet." << endl;
+    ofstream outFile(filename, ios::binary);
+    if (!outFile) {
+        cerr << "Error opening file for writing: " << filename << endl;
+        return;
+    }       
+    for (const auto& product : products) {
+        outFile.write(reinterpret_cast<const char*>(&product), sizeof(Product));
+    }
+    outFile.close();
+    cout << "Products saved to file successfully." << endl;
 }
 
 void loadFromFile(vector<Product>& products, int& nextId, const string& filename) {
@@ -100,4 +141,21 @@ void loadFromFile(vector<Product>& products, int& nextId, const string& filename
     // 6. Keep track of the highest ID you find.
     // 7. After the loop, set 'nextId' to be (the highest ID + 1).
     // 8. Close the file.
+    cout << "loadFromFile function is not implemented yet." << endl;
+    ifstream inFile(filename, ios::binary);     
+    if (!inFile) {
+        
+        return;
+    }
+    Product tempProduct;
+    int maxId = 0;
+    while (inFile.read(reinterpret_cast<char*>(&tempProduct), sizeof(Product))) {
+        products.push_back(tempProduct);
+        if (tempProduct.id > maxId) {
+            maxId = tempProduct.id;
+        }
+    }
+    nextId = maxId + 1;
+    inFile.close();
+    cout << "Products loaded from file successfully." << endl;
 }
