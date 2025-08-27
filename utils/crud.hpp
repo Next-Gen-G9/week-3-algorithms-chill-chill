@@ -37,6 +37,15 @@ void displayAllProducts(const vector<Product>& products) {
     // 2. If it is, print "Inventory is empty."
     // 3. If not, loop through and print each product's details in a clean table format.
     cout << "displayAllProducts function is not implemented yet." << endl;
+    if(products.empty()){
+        cout<<"Inventory is empty."<<endl;
+    }else {
+        cout<<"ID\tName\tQuantity\tPrice\n";
+        for(const auto& product: products){
+            cout<<product.id<<"\t"<<product.name<<"\t"<<product.quantity<<"\t"<<product.price<<"\n";
+        }
+    }
+
 }
 
 void searchProduct(const vector<Product>& products) {
@@ -45,6 +54,12 @@ void searchProduct(const vector<Product>& products) {
     // 2. Find the product with that ID and print its details.
     // 3. If not found, print a "Product not found" message.
     cout << "searchProduct function is not implemented yet." << endl;
+    int searchId;
+    int found=0;
+    cout<<"Enter product ID to search:";cin>>searchId;
+    if(searchId!=found){
+        cout<<"Product not found";
+    }
 }
 
 void updateProduct(vector<Product>& products) {
